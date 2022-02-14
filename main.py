@@ -9,7 +9,6 @@ import paho.mqtt.publish as publish
 load_dotenv()
 MQTT_SERVER = os.getenv("MQTT_SERVER") # ip address of linode instance
 print("Server: " + MQTT_SERVER)
-MQTT_PATH = "test_channel" 
 
 app = Flask(__name__)
 
@@ -18,7 +17,9 @@ app = Flask(__name__)
 def index(template):
     if request.method == "POST":
         destination = request.form.get("dest")
-        publish.single(MQTT_PATH, destination, hostname=MQTT_SERVER)
+        source = request.form.get("source")
+        publish.single("destination", destination, hostname=MQTT_SERVER)
+        publish.single("source", source, hostname=MQTT_SERVER)
         print("Published message to " + MQTT_SERVER)    
     return render_template(template)
 
